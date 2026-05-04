@@ -5,19 +5,23 @@ const { argv } = require("node:process");
 const CREATE_TABLES = `
 CREATE TABLE IF NOT EXISTS tags (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, 
+  recipe_id INTEGER, 
   name VARCHAR(255) 
 ); 
 
 CREATE TABLE IF NOT EXISTS recipes (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, 
-  tag INTEGER REFERENCES tags(id), 
+  tag_id INTEGER, 
   title VARCHAR(255), 
-  ingredients JSONB
+  steps VARCHAR(255), 
 ); 
 
 CREATE TABLE IF NOT EXISTS ingredients (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, 
-  name VARCHAR(255)
+  recipe_id INTEGER, 
+  name VARCHAR(255), 
+  quantity FLOAT, 
+  unit VARCHAR(255), 
 ); 
 `;
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipro</title>
+</head>
+<body>
+  <%- include('./navbar.ejs') %>
+  Create New Tag
+  <form action="/new_tag" method="POST">
+    <label for="tag_name">Tag Name: </label>
+    <input type="text" name="tagName" id="tag_name">
+    <button type="submit">Create Tag</button>
+  </form>
+</body>
+</html>
