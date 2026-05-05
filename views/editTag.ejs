@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipro</title>
+</head>
+<body>
+  <%- include('./navbar.ejs') %>
+  <h1>Edit Tag</h1>
+  <form action="/tags/edit/<%= tag.id %>" method="POST">
+    <label for="tag-name">New Tag Name: </label>
+    <input type="text" name="tagName" id="tag-name" value="<%= tag.name %>">
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>

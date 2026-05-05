@@ -7,6 +7,15 @@
 </head>
 <body>
   <%- include('./navbar.ejs') %>
-  All tags 
+  <ul>  
+    <% tags.forEach(tag => { %>
+      <li>
+        <%= tag.name %>
+        Show Recipes
+        <a href="/tags/edit/<%= tag.id %>">Edit</a> 
+        <a href="/tags/delete/<%= tag.id %>">Delete</a>
+      </li>
+    <% }) %> 
+  </ul>
 </body>
 </html>
