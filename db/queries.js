@@ -1,10 +1,10 @@
 const pool = require("./pool");
 
 async function createRecipe(recipe) {
-  await pool.query(
-    "INSERT INTO recipes (tag_id, title, steps) VALUES (($1), ($2), ($3)); ",
-    [recipe.tag_id, recipe.title, recipe.steps],
-  );
+  await pool.query("INSERT INTO recipes (title, steps) VALUES (($1), ($2)); ", [
+    recipe.title,
+    recipe.steps,
+  ]);
 }
 
 async function getAllTags() {
@@ -19,19 +19,23 @@ async function getTagById(id) {
   return rows[0];
 }
 
-async function createTag(tag) {
-  await pool.query("INSERT INTO tags (recipe_id, name) VALUES (($1), ($2)); ", [
-    tag.recipe_id,
-    tag.name,
-  ]);
+async function createTag(name) {
+  await pool.query("INSERT INTO tags (name) VALUES ($1) ; ", [name]);
 }
 
 async function editTag(id, name) {
   await pool.query("UPDATE tags SET name = ($1) WHERE id = ($2); ", [name, id]);
 }
 
-async function deleteTag(tagId) {
-  await pool.query("DELETE FROM tags WHERE id = ($1); ", [tagId]);
+async function deleteTag(id) {
+  await pool.query("DELETE FROM tags WHERE id = ($1); ", [id]);
 }
 
-module.exports = { createRecipe, getAllTags, getTagById, createTag, editTag, deleteTag };
+module.exports = {
+  createRecipe,
+  getAllTags,
+  getTagById,
+  createTag,
+  editTag,
+  deleteTag,
+};

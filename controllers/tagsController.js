@@ -10,8 +10,7 @@ const createTagGet = (req, res) => {
 };
 
 async function createTagPost(req, res) {
-  const tag = { recipe_id: null, name: req.body.tagName };
-  await db.createTag(tag);
+  await db.createTag(req.body.tagName);
   res.redirect("/tags");
 }
 
