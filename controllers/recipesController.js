@@ -1,4 +1,5 @@
 const db = require("../db/recipes/queries");
+const ingredientsDb = require("../db/ingredients/queries"); 
 
 // Create methods
 const createRecipeGet = (req, res) => {
@@ -13,7 +14,7 @@ async function createRecipePost(req, res) {
 // Update methods
 async function editRecipeGet(req, res) {
   const recipe = await db.getRecipe(req.params.recipeId);
-  const ingredients = await db.getIngredientsByRecipe(req.params.recipeId);
+  const ingredients = await ingredientsDb.getIngredientsByRecipe(req.params.recipeId);
   res.render("recipes/editRecipe", {
     recipe: recipe,
     ingredients: ingredients,
@@ -38,7 +39,7 @@ async function editRecipeStepsPost(req, res) {
 // Read methods
 async function showRecipe(req, res) {
   const recipe = await db.getRecipe(req.params.recipeId);
-  const ingredients = await db.getIngredientsByRecipe(req.params.recipeId);
+  const ingredients = await ingredientsDb.getIngredientsByRecipe(req.params.recipeId);
   res.render("recipes/detail", { recipe: recipe, ingredients: ingredients });
 }
 

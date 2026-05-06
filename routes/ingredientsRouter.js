@@ -3,13 +3,18 @@ const ingredientsRouter = Router();
 const ingredientsController = require("../controllers/ingredientsController");
 
 ingredientsRouter.get(
-  "/add/:recipeId",
-  ingredientsController.addIngredientGet,
+  "/edit/:recipeId",
+  ingredientsController.editIngredientGet,
 );
 
 ingredientsRouter.post(
   "/add/:recipeId",
   ingredientsController.addIngredientPost,
 );
+
+ingredientsRouter.get(
+  "/delete/:recipeId/:ingredientId", 
+  ingredientsController.deleteIngredient, 
+)
 
 module.exports = ingredientsRouter;

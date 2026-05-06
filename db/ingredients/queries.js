@@ -34,8 +34,27 @@ async function getIngredientsByRecipe(recipeId) {
   return rows;
 }
 
+// Delete queries
+async function deleteIngredient(recipeId, ingredientId) {
+  await pool.query(
+    `
+    DELETE FROM recipes_ingredients
+    WHERE recipe_id = ($1) AND ingredient_id = ($2);
+    `,
+    [recipeId, ingredientId],
+  );
+  await pool.query(
+    `
+    DELETE FROM ingredients
+    WHERE id = ($1); 
+    `,
+    [ingredientId],
+  );
+}
+
 module.exports = {
   addNewIngredient,
   addIngredientToRecipe,
   getIngredientsByRecipe,
+  deleteIngredient,
 };
