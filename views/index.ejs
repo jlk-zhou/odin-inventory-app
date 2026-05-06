@@ -11,9 +11,9 @@
   <ul>
       <% recipes.forEach(recipe => { %>
         <li><%= recipe.title %>
-          <a href="/recipe/<%= recipe.id %>">Show Details</a>
-          <a href="/recipe/edit/<%= recipe.id %>">Edit</a>
-          <a href="/recipe/delete/<%= recipe.id %>">Delete</a>
+          <a href="/recipes/<%= recipe.id %>">Show Details</a>
+          <a href="/recipes/edit/<%= recipe.id %>">Edit</a>
+          <a href="/recipes/delete/<%= recipe.id %>">Delete</a>
         </li>
       <% }) %>
   </ul>
