@@ -9,6 +9,7 @@
   <%- include('../navbar.ejs') %> 
   <h1>Edit Ingredients for Recipe: <%= recipe.title %></h1>
   <h2>Add an Ingredient</h2>
+  <%- include('../errors.ejs') %>
   <form action="/recipes/ingredients/add/<%= recipe.id %>" method="POST">
     <label for="name">Ingredient Name: </label>
     <input type="text" name="name" id="name" placeholder="Milk">

@@ -1,14 +1,24 @@
 const db = require("../db/tags/queries");
+const validators = require("./validators");
+const { validationResult, matchedData } = require("express-validator");
 
 // Create methods
 const createTagGet = (req, res) => {
   res.render("tags/newTag");
 };
 
-async function createTagPost(req, res) {
-  await db.createTag(req.body.tagName);
-  res.redirect("/tags");
-}
+const createTagPost = [
+  validators.validateTag,
+  async function (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("tags/newTag", { errors: errors.array() });
+    }
+    const { tagName } = matchedData(req);
+    await db.createTag(tagName);
+    res.redirect("/tags");
+  },
+];
 
 // Update methods
 async function editTagGet(req, res) {
@@ -16,14 +26,21 @@ async function editTagGet(req, res) {
   res.render("tags/editTag", { tag: tag });
 }
 
-async function editTagPost(req, res) {
-  const tagId = req.params.tagId;
-  const newTagName = req.body.tagName;
-  await db.editTag(tagId, newTagName);
-  res.redirect("/tags");
-}
+const editTagPost = [
+  validators.validateTag,
+  async function (req, res) {
+    const tag = await db.getTagById(req.params.tagId); 
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("tags/editTag", { tag: tag, errors: errors.array() });
+    }
+    const { tagName } = matchedData(req);
+    await db.editTag(req.params.tagId, tagName);
+    res.redirect("/tags");
+  },
+];
 
-// Read methods 
+// Read methods
 async function showAllTags(req, res) {
   const tags = await db.getAllTags();
   res.render("tags/tags", { tags: tags });

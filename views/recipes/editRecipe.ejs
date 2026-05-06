@@ -8,8 +8,9 @@
   <body>
     <%- include('../navbar.ejs') %>
     <h1>Edit Recipe: <%= recipe.title %></h1>
+    <h2><label for="title">Recipe Title</label></h2>
     <form action="/recipes/edit/<%= recipe.id %>" method="POST">
-      <h2><label for="title">Recipe Title</label></h2>
+      <%- include('../errors.ejs') %>
       <input type="text" name="title" id="title" value="<%= recipe.title %>" />
       <button type="submit">Save</button>
     </form>

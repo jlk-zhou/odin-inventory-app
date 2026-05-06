@@ -1,45 +1,89 @@
 const db = require("../db/recipes/queries");
-const ingredientsDb = require("../db/ingredients/queries"); 
+const ingredientsDb = require("../db/ingredients/queries");
+const { validationResult, matchedData } = require("express-validator");
+const validators = require("./validators");
 
 // Create methods
 const createRecipeGet = (req, res) => {
   res.render("recipes/newRecipe");
 };
 
-async function createRecipePost(req, res) {
-  await db.createRecipe(req.body.recipeTitle);
-  res.redirect("/");
-}
+const createRecipePost = [
+  validators.validateRecipe,
+  async function (req, res) {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(400)
+        .render("recipes/newRecipe", { errors: errors.array() });
+    }
+    const title = matchedData(req);
+    await db.createRecipe(title);
+    res.redirect("/");
+  },
+];
 
 // Update methods
 async function editRecipeGet(req, res) {
   const recipe = await db.getRecipe(req.params.recipeId);
-  const ingredients = await ingredientsDb.getIngredientsByRecipe(req.params.recipeId);
+  const ingredients = await ingredientsDb.getIngredientsByRecipe(
+    req.params.recipeId,
+  );
   res.render("recipes/editRecipe", {
     recipe: recipe,
     ingredients: ingredients,
   });
 }
 
-async function editRecipePost(req, res) {
-  await db.editRecipe(req.params.recipeId, req.body.title);
-  res.redirect("/");
-}
+const editRecipePost = [
+  validators.validateRecipe,
+  async function (req, res) {
+    const recipe = await db.getRecipe(req.params.recipeId);
+    const ingredients = await ingredientsDb.getIngredientsByRecipe(
+      req.params.recipeId,
+    );
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("recipes/editRecipe", {
+        recipe: recipe,
+        ingredients: ingredients,
+        errors: errors.array(),
+      });
+    }
+    const { title } = matchedData(req);
+    await db.editRecipe(req.params.recipeId, title);
+    res.redirect("/");
+  },
+];
 
 async function editRecipeStepsGet(req, res) {
   const recipe = await db.getRecipe(req.params.recipeId);
   res.render("recipes/editSteps", { recipe: recipe });
 }
 
-async function editRecipeStepsPost(req, res) {
-  await db.editRecipeSteps(req.params.recipeId, req.body.steps);
-  res.redirect(`/recipes/edit/${req.params.recipeId}`);
-}
+const editRecipeStepsPost = [
+  validators.validateRecipeSteps,
+  async function (req, res) {
+    const recipe = await db.getRecipe(req.params.recipeId);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("recipes/editSteps", {
+        recipe: recipe,
+        errors: errors.array(),
+      });
+    }
+    const { steps } = matchedData(req); 
+    await db.editRecipeSteps(req.params.recipeId, steps);
+    res.redirect(`/recipes/edit/${req.params.recipeId}`);
+  },
+];
 
 // Read methods
 async function showRecipe(req, res) {
   const recipe = await db.getRecipe(req.params.recipeId);
-  const ingredients = await ingredientsDb.getIngredientsByRecipe(req.params.recipeId);
+  const ingredients = await ingredientsDb.getIngredientsByRecipe(
+    req.params.recipeId,
+  );
   res.render("recipes/detail", { recipe: recipe, ingredients: ingredients });
 }
 
