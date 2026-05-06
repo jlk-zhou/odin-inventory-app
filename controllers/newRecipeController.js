@@ -1,8 +1,11 @@
+const db = require("../db/recipes/queries"); 
+
 const createRecipeGet = (req, res) => {
-  res.render("newRecipe");
+  res.render("recipes/newRecipe");
 };
 
-const createRecipePost = (req, res) => {
+async function createRecipePost (req, res) {
+  await db.createRecipe(req.body.recipeTitle); 
   res.redirect("/");
 };
 

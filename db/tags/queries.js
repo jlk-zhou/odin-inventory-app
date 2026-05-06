@@ -1,11 +1,4 @@
-const pool = require("./pool");
-
-async function createRecipe(recipe) {
-  await pool.query("INSERT INTO recipes (title, steps) VALUES (($1), ($2)); ", [
-    recipe.title,
-    recipe.steps,
-  ]);
-}
+const pool = require("../pool");
 
 async function getAllTags() {
   const { rows } = await pool.query("SELECT * FROM tags; ");
@@ -20,7 +13,7 @@ async function getTagById(id) {
 }
 
 async function createTag(name) {
-  await pool.query("INSERT INTO tags (name) VALUES ($1) ; ", [name]);
+  await pool.query("INSERT INTO tags (name) VALUES ($1); ", [name]);
 }
 
 async function editTag(id, name) {
@@ -32,7 +25,6 @@ async function deleteTag(id) {
 }
 
 module.exports = {
-  createRecipe,
   getAllTags,
   getTagById,
   createTag,

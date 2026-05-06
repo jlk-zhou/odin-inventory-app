@@ -3,8 +3,8 @@ const app = express();
 const path = require("node:path");
 require("dotenv").config();
 
-const tagsRouter = require("./routes/tagsRouter");
-const newTagRouter = require("./routes/newTagRouter"); 
+const tagsRouter = require("./routes/tags/tagsRouter");
+const newTagRouter = require("./routes/tags/newTagRouter"); 
 const newRecipeRouter = require("./routes/newRecipeRouter"); 
 const indexRouter = require("./routes/indexRouter"); 
 

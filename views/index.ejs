@@ -7,6 +7,15 @@
 </head>
 <body>
   <%- include('./navbar.ejs') %> 
-  All recipes
+  <h1>All Recipes</h1> 
+  <ul>
+      <% recipes.forEach(recipe => { %>
+        <li><%= recipe.title %>
+          <a href="/recipe/<%= recipe.id %>">Show Details</a>
+          <a href="/recipe/edit/<%= recipe.id %>">Edit</a>
+          <a href="/recipe/delete/<%= recipe.id %>">Delete</a>
+        </li>
+      <% }) %>
+  </ul>
 </body>
 </html>

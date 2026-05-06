@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipro</title>
+</head>
+<body>
+  <%- include('../navbar.ejs') %>
+  <h1>Edit Steps for Recipe: <%= recipe.title %></h1>
+  <form action="/recipe/edit/steps/<%= recipe.id %>" method="POST">
+    <h2><label for="steps">Steps: </label></h2>
+    <textarea name="steps" id="steps" placeholder="1. Boil water..."><%= recipe.steps %></textarea>
+    <br>
+    <button type="submit">Save</button>
+  </form>
+  <a href="/recipe/edit/<%= recipe.id %>">Back to Edit</a>
+</body>
+</html>

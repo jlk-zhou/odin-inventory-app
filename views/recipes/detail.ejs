@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipro</title>
+  </head>
+  <body>
+    <%- include('../navbar.ejs') %>
+    <h1>Recipe: <%= recipe.title %></h1>
+    <h2>Ingredients</h2>
+    <ul>
+      <% ingredients.forEach(ingredient => { %>
+        <li>
+          <%= ingredient.name %>, <%= ingredient.quantity %> <%= ingredient.unit %>
+        </li>
+      <% }) %>
+    </ul>
+    <h2>Steps</h2>
+    <p><%= recipe.steps %></p>
+    <ul>
+      <li>
+        <a href="/recipe/edit/<%= recipe.id %>">Edit Recipe</a>
+        <a href="/">Back to Home</a>
+      </li>
+    </ul>
+  </body>
+</html>

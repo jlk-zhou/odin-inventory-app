@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipro</title>
+</head>
+<body>
+  <%- include('../navbar.ejs') %> 
+  <h1>Add Ingredient to Recipe: <%= recipe.title %></h1>
+  <form action="/recipe/add-ingredient/<%= recipe.id %>" method="POST">
+    <label for="name">Ingredient Name: </label>
+    <input type="text" name="name" id="name" placeholder="Milk">
+    <br>
+    <label for="quantity">Quantity: </label>
+    <input type="number" step="any" name="quantity" id="quantity" placeholder="300">
+    <br>
+    <label for="unit">Unit: </label>
+    <input type="text" name="unit" id="unit" placeholder="ml">
+    <br>
+    <button type="submit">Add</button>
+  </form>
+  <h2>Current Ingredients</h2>
+  <ul>
+    <% ingredients.forEach(ingredient => { %>
+      <li>
+        <a href="/recipe/ingredient/delete/<%= ingredient.id %>">X</a> 
+        <%= ingredient.name %>, <%= ingredient.quantity %> <%= ingredient.unit %>
+      </li>
+    <% }) %>
+  </ul>
+  <br>
+  <a href="/recipe/edit/<%= recipe.id %>">Back to Edit</a>
+</body>
+</html>

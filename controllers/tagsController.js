@@ -1,12 +1,17 @@
-const db = require("../db/queries");
+const db = require("../db/tags/queries");
 
 async function showAllTags(req, res) {
   const tags = await db.getAllTags();
-  res.render("tags", { tags: tags });
+  res.render("tags/tags", { tags: tags });
+}
+
+async function showTagRecipes(req, res) {
+  const tag = await db.getTagById(req.params.tagId);
+  res.render("tags/detail", { tag: tag });
 }
 
 const createTagGet = (req, res) => {
-  res.render("newTag");
+  res.render("tags/newTag");
 };
 
 async function createTagPost(req, res) {
@@ -16,14 +21,14 @@ async function createTagPost(req, res) {
 
 async function editTagGet(req, res) {
   const tag = await db.getTagById(req.params.tagId);
-  res.render("editTag", { tag: tag });
+  res.render("tags/editTag", { tag: tag });
 }
 
 async function editTagPost(req, res) {
-  const tagId = req.params.tagId; 
-  const newTagName = req.body.tagName; 
-  await db.editTag(tagId, newTagName); 
-  res.redirect("/tags"); 
+  const tagId = req.params.tagId;
+  const newTagName = req.body.tagName;
+  await db.editTag(tagId, newTagName);
+  res.redirect("/tags");
 }
 
 async function deleteTag(req, res) {
@@ -31,4 +36,12 @@ async function deleteTag(req, res) {
   res.redirect("/tags");
 }
 
-module.exports = { showAllTags, createTagGet, createTagPost, editTagGet, editTagPost, deleteTag };
+module.exports = {
+  showAllTags,
+  showTagRecipes,
+  createTagGet,
+  createTagPost,
+  editTagGet,
+  editTagPost,
+  deleteTag,
+};

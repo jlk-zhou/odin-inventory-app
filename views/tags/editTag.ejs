@@ -6,12 +6,13 @@
   <title>Recipro</title>
 </head>
 <body>
-  <%- include('./navbar.ejs') %>
-  <h1>Edit Tag</h1>
+  <%- include('../navbar.ejs') %>
+  <h1>Edit Tag: <%= tag.name %></h1>
   <form action="/tags/edit/<%= tag.id %>" method="POST">
     <label for="tag-name">New Tag Name: </label>
     <input type="text" name="tagName" id="tag-name" value="<%= tag.name %>">
     <button type="submit">Save</button>
+    <a href="/tags">Cancel</a>
   </form>
 </body>
 </html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipro</title>
+  </head>
+  <body>
+    <%- include('../navbar.ejs') %>
+    <h1>Edit Recipe: <%= recipe.title %></h1>
+    <form action="/recipe/edit/<%= recipe.id %>" method="POST">
+      <h2><label for="title">Recipe Title</label></h2>
+      <input type="text" name="title" id="title" value="<%= recipe.title %>" />
+      <button type="submit">Save</button>
+    </form>
+    <h2>Ingredients</h2>
+    <ul>
+      <% ingredients.forEach(ingredient => { %>
+        <li>
+          <%= ingredient.name %>, <%= ingredient.quantity %> <%= ingredient.unit %>
+        </li>
+      <% }) %>
+    </ul>
+    <a href="/recipe/add-ingredient/<%= recipe.id %>">Add an Ingredient</a>
+    <h2>Steps</h2>
+    <p><%= recipe.steps %></p>
+    <a href="/recipe/edit/steps/<%= recipe.id %>">Edit Steps</a>
+    <br />
+    <ul>
+      <li>
+        <a href="/recipe/<%= recipe.id %>">View Recipe Details</a>
+        <a href="/">Back to Home</a>
+      </li>
+    </ul>
+  </body>
+</html>

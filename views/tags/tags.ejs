@@ -6,12 +6,13 @@
   <title>Recipro</title>
 </head>
 <body>
-  <%- include('./navbar.ejs') %>
+  <%- include('../navbar.ejs') %>
+  <h1>All Tags</h1>
   <ul>  
     <% tags.forEach(tag => { %>
       <li>
         <%= tag.name %>
-        Show Recipes
+        <a href="/tags/<%= tag.id %>">Show Recipes</a>
         <a href="/tags/edit/<%= tag.id %>">Edit</a> 
         <a href="/tags/delete/<%= tag.id %>">Delete</a>
       </li>
