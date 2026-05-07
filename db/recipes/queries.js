@@ -60,13 +60,16 @@ async function editRecipeSteps(id, steps) {
 async function deleteTagFromRecipe(recipeId, tagId) {
   await pool.query(
     "DELETE FROM recipes_tags WHERE recipe_id = ($1) AND tag_id = ($2); ",
-    [recipeId, tagId]
+    [recipeId, tagId],
   );
 }
 
 async function deleteRecipe(id) {
-  await pool.query("DELETE FROM recipes_ingredients WHERE recipe_id = ($1); ", [id]); 
-  await pool.query("DELETE FROM recipes_tags WHERE recipe_id = ($1);", [id]); 
+  const { rows } = await pool.query(
+    "DELETE FROM recipes_ingredients WHERE recipe_id = ($1) RETURNING ingredient_id; ",
+    [id],
+  );
+  await pool.query("DELETE FROM recipes_tags WHERE recipe_id = ($1);", [id]);
   await pool.query("DELETE FROM recipes WHERE id = ($1);", [id]);
 }
 
@@ -78,6 +81,6 @@ module.exports = {
   getTagForRecipe,
   editRecipe,
   editRecipeSteps,
-  deleteTagFromRecipe, 
+  deleteTagFromRecipe,
   deleteRecipe,
 };

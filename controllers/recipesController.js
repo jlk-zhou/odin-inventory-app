@@ -18,7 +18,7 @@ const createRecipePost = [
         .status(400)
         .render("recipes/newRecipe", { errors: errors.array() });
     }
-    const title = matchedData(req);
+    const { title } = matchedData(req);
     await db.createRecipe(title);
     res.redirect("/");
   },
@@ -45,11 +45,13 @@ const editRecipePost = [
     const ingredients = await ingredientsDb.getIngredientsByRecipe(
       req.params.recipeId,
     );
+    const tags = await db.getTagForRecipe(req.params.recipeId); 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("recipes/editRecipe", {
         recipe: recipe,
         ingredients: ingredients,
+        tags: tags, 
         errors: errors.array(),
       });
     }
@@ -97,11 +99,13 @@ const editRecipeTagsPost = [
   async function (req, res) {
     const recipe = await db.getRecipe(req.params.recipeId);
     const availableTags = await tagsDb.getAvailableTags(req.params.recipeId);
+    const tags = await db.getTagForRecipe(req.params.recipeId); 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).render("recipes/editTags", {
         recipe: recipe,
         availableTags: availableTags,
+        tags: tags, 
         errors: errors.array(),
       });
     }

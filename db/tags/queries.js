@@ -31,9 +31,12 @@ async function getRecipesByTag(tagId) {
 async function getAvailableTags(recipeId) {
   const { rows } = await pool.query(
     `
-    SELECT tags.id, tags.name FROM tags
-    LEFT JOIN recipes_tags ON tags.id = tag_id
-    WHERE recipe_id IS DISTINCT FROM ($1); 
+    SELECT * FROM tags 
+    WHERE id NOT IN (
+      SELECT tags.id FROM tags
+      LEFT JOIN recipes_tags ON tags.id = tag_id
+      WHERE recipe_id = ($1)
+    ); 
     `,
     [recipeId],
   );
