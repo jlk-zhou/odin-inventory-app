@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipro</title>
-</head>
-<body>
-  <%- include('../navbar.ejs') %>
-  <h1>Tag: <%= tag.name %></h1> 
-  <a href="/">Back to Home</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipro</title>
+  </head>
+  <body>
+    <%- include('../navbar.ejs') %>
+    <h1>Tag: <%= tag.name %></h1>
+    <h2>Recipes</h2>
+    <ul>
+      <% recipes.forEach(recipe => { %>
+        <li>
+          <%= recipe.title %>
+          <a href="/recipes/<%= recipe.id %>">Details</a>
+          <a href="/tags/delete/<%= recipe.id %>/<%= tag.id %>">X</a>
+        </li>
+      <% }) %>
+    </ul>
+    <ul>
+      <li><a href="/tags">Back to Tags</a></li>
+      <li><a href="/">Back to Home</a></li>
+    </ul>
+  </body>
 </html>

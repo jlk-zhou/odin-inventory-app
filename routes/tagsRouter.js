@@ -10,6 +10,9 @@ tagsRouter.post("/new", tagsController.createTagPost);
 tagsRouter.get("/edit/:tagId", tagsController.editTagGet); 
 tagsRouter.post("/edit/:tagId", tagsController.editTagPost)
 
+// Delete a recipe from a tag
+tagsRouter.get("/delete/:recipeId/:tagId", tagsController.deleteRecipeFromTag); 
+
 // Delete a tag
 tagsRouter.get("/delete/:tagId", tagsController.deleteTag); 
 

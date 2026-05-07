@@ -30,9 +30,11 @@ async function editRecipeGet(req, res) {
   const ingredients = await ingredientsDb.getIngredientsByRecipe(
     req.params.recipeId,
   );
+  const tags = await db.getTagForRecipe(req.params.recipeId);
   res.render("recipes/editRecipe", {
     recipe: recipe,
     ingredients: ingredients,
+    tags: tags,
   });
 }
 
@@ -82,11 +84,11 @@ const editRecipeStepsPost = [
 async function editRecipeTagsGet(req, res) {
   const recipe = await db.getRecipe(req.params.recipeId);
   const availableTags = await tagsDb.getAvailableTags(req.params.recipeId);
-  const tags = await db.getTagForRecipe(req.params.recipeId); 
+  const tags = await db.getTagForRecipe(req.params.recipeId);
   res.render("recipes/editTags", {
     recipe: recipe,
     availableTags: availableTags,
-    tags: tags
+    tags: tags,
   });
 }
 
@@ -103,9 +105,9 @@ const editRecipeTagsPost = [
         errors: errors.array(),
       });
     }
-    const { tagId } = matchedData(req); 
-    await db.addTagToRecipe(req.params.recipeId, tagId); 
-    res.redirect(`/recipes/edit/tags/${req.params.recipeId}`); 
+    const { tagId } = matchedData(req);
+    await db.addTagToRecipe(req.params.recipeId, tagId);
+    res.redirect(`/recipes/edit/tags/${req.params.recipeId}`);
   },
 ];
 
@@ -115,13 +117,18 @@ async function showRecipe(req, res) {
   const ingredients = await ingredientsDb.getIngredientsByRecipe(
     req.params.recipeId,
   );
-  res.render("recipes/detail", { recipe: recipe, ingredients: ingredients });
+  const tags = await db.getTagForRecipe(req.params.recipeId);
+  res.render("recipes/detail", {
+    recipe: recipe,
+    ingredients: ingredients,
+    tags: tags,
+  });
 }
 
 // Delete a tag from recipe
 async function deleteTagFromRecipe(req, res) {
-  await db.deleteTagFromRecipe(req.params.recipeId, req.params.tagId); 
-  res.redirect(`/recipes/edit/tags/${req.params.recipeId}`); 
+  await db.deleteTagFromRecipe(req.params.recipeId, req.params.tagId);
+  res.redirect(`/recipes/edit/tags/${req.params.recipeId}`);
 }
 
 // Delete a recipe
@@ -138,8 +145,8 @@ module.exports = {
   editRecipeStepsGet,
   editRecipeStepsPost,
   editRecipeTagsGet,
-  editRecipeTagsPost, 
+  editRecipeTagsPost,
   showRecipe,
-  deleteTagFromRecipe, 
+  deleteTagFromRecipe,
   deleteRecipe,
 };

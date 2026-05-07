@@ -18,6 +18,15 @@ async function getTagById(id) {
   return rows[0];
 }
 
+async function getRecipesByTag(tagId) {
+  const { rows } = await pool.query(`
+    SELECT recipes.id, recipes.title FROM recipes
+    JOIN recipes_tags ON recipes.id = recipe_id
+    WHERE tag_id = ($1); 
+    `, [tagId]); 
+  return rows; 
+}
+
 // Read all tags that are yet to be added to a recipe
 async function getAvailableTags(recipeId) {
   const { rows } = await pool.query(
@@ -38,6 +47,7 @@ async function editTag(id, name) {
 
 // Delete queries
 async function deleteTag(id) {
+  await pool.query("DELETE FROM recipes_tags WHERE tag_id = ($1); ", [id]); 
   await pool.query("DELETE FROM tags WHERE id = ($1); ", [id]);
 }
 
@@ -45,6 +55,7 @@ module.exports = {
   createTag,
   getAllTags,
   getTagById,
+  getRecipesByTag, 
   getAvailableTags, 
   editTag,
   deleteTag,

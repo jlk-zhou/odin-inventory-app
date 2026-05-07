@@ -18,6 +18,14 @@
     </ul>
     <h2>Steps</h2>
     <p><%= recipe.steps %></p>
+    <h2>Tags</h2>
+    <ul>
+      <% tags.forEach(tag => { %>
+        <li>
+          <%= tag.name %>
+        </li>
+      <% }) %>
+    </ul>
     <ul>
       <li>
         <a href="/recipes/edit/<%= recipe.id %>">Edit Recipe</a>

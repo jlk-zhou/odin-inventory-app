@@ -1,6 +1,8 @@
 const db = require("../db/tags/queries");
+const recipesDb = require("../db/recipes/queries"); 
 const validators = require("./validators");
 const { validationResult, matchedData } = require("express-validator");
+const { deleteRecipe } = require("./recipesController");
 
 // Create methods
 const createTagGet = (req, res) => {
@@ -29,10 +31,12 @@ async function editTagGet(req, res) {
 const editTagPost = [
   validators.validateTag,
   async function (req, res) {
-    const tag = await db.getTagById(req.params.tagId); 
+    const tag = await db.getTagById(req.params.tagId);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).render("tags/editTag", { tag: tag, errors: errors.array() });
+      return res
+        .status(400)
+        .render("tags/editTag", { tag: tag, errors: errors.array() });
     }
     const { tagName } = matchedData(req);
     await db.editTag(req.params.tagId, tagName);
@@ -48,10 +52,16 @@ async function showAllTags(req, res) {
 
 async function showTagRecipes(req, res) {
   const tag = await db.getTagById(req.params.tagId);
-  res.render("tags/detail", { tag: tag });
+  const recipes = await db.getRecipesByTag(req.params.tagId);
+  res.render("tags/detail", { tag: tag, recipes: recipes });
 }
 
 // Delete method
+async function deleteRecipeFromTag(req, res) {
+  await recipesDb.deleteTagFromRecipe(req.params.recipeId, req.params.tagId); 
+  res.redirect(`/tags/${req.params.tagId}`); 
+}
+
 async function deleteTag(req, res) {
   await db.deleteTag(req.params.tagId);
   res.redirect("/tags");
@@ -64,5 +74,6 @@ module.exports = {
   createTagPost,
   editTagGet,
   editTagPost,
+  deleteRecipeFromTag, 
   deleteTag,
 };

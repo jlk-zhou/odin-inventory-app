@@ -65,6 +65,8 @@ async function deleteTagFromRecipe(recipeId, tagId) {
 }
 
 async function deleteRecipe(id) {
+  await pool.query("DELETE FROM recipes_ingredients WHERE recipe_id = ($1); ", [id]); 
+  await pool.query("DELETE FROM recipes_tags WHERE recipe_id = ($1);", [id]); 
   await pool.query("DELETE FROM recipes WHERE id = ($1);", [id]);
 }
 
