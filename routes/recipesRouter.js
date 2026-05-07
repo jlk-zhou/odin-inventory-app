@@ -6,13 +6,17 @@ const recipesController = require("../controllers/recipesController");
 recipesRouter.get("/new", recipesController.createRecipeGet); 
 recipesRouter.post("/new", recipesController.createRecipePost); 
 
-// Update title of a recipe
-recipesRouter.get("/edit/:recipeId", recipesController.editRecipeGet); 
-recipesRouter.post("/edit/:recipeId", recipesController.editRecipePost); 
+// Update tags for a recipe
+recipesRouter.get("/edit/tags/:recipeId", recipesController.editRecipeTagsGet); 
+recipesRouter.post("/edit/tags/:recipeId", recipesController.editRecipeTagsPost); 
 
 // Update steps of a recipe
 recipesRouter.get("/edit/steps/:recipeId", recipesController.editRecipeStepsGet); 
 recipesRouter.post("/edit/steps/:recipeId", recipesController.editRecipeStepsPost); 
+
+// Update title of a recipe
+recipesRouter.get("/edit/:recipeId", recipesController.editRecipeGet); 
+recipesRouter.post("/edit/:recipeId", recipesController.editRecipePost); 
 
 // Read a recipe's detail
 recipesRouter.get("/:recipeId", recipesController.showRecipe); 

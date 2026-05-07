@@ -18,6 +18,19 @@ async function getTagById(id) {
   return rows[0];
 }
 
+// Read all tags that are yet to be added to a recipe
+async function getAvailableTags(recipeId) {
+  const { rows } = await pool.query(
+    `
+    SELECT tags.id, tags.name FROM tags
+    LEFT JOIN recipes_tags ON tags.id = tag_id
+    WHERE recipe_id IS DISTINCT FROM ($1); 
+    `,
+    [recipeId],
+  );
+  return rows;
+}
+
 // Update queries
 async function editTag(id, name) {
   await pool.query("UPDATE tags SET name = ($1) WHERE id = ($2); ", [name, id]);
@@ -32,6 +45,7 @@ module.exports = {
   createTag,
   getAllTags,
   getTagById,
+  getAvailableTags, 
   editTag,
   deleteTag,
 };

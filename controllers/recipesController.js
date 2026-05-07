@@ -1,5 +1,6 @@
 const db = require("../db/recipes/queries");
 const ingredientsDb = require("../db/ingredients/queries");
+const tagsDb = require("../db/tags/queries");
 const { validationResult, matchedData } = require("express-validator");
 const validators = require("./validators");
 
@@ -72,9 +73,39 @@ const editRecipeStepsPost = [
         errors: errors.array(),
       });
     }
-    const { steps } = matchedData(req); 
+    const { steps } = matchedData(req);
     await db.editRecipeSteps(req.params.recipeId, steps);
     res.redirect(`/recipes/edit/${req.params.recipeId}`);
+  },
+];
+
+async function editRecipeTagsGet(req, res) {
+  const recipe = await db.getRecipe(req.params.recipeId);
+  const availableTags = await tagsDb.getAvailableTags(req.params.recipeId);
+  const tags = await db.getTagForRecipe(req.params.recipeId); 
+  res.render("recipes/editTags", {
+    recipe: recipe,
+    availableTags: availableTags,
+    tags: tags
+  });
+}
+
+const editRecipeTagsPost = [
+  validators.validateRecipeTags,
+  async function (req, res) {
+    const recipe = await db.getRecipe(req.params.recipeId);
+    const availableTags = await tagsDb.getAvailableTags(req.params.recipeId);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).render("recipes/editTags", {
+        recipe: recipe,
+        availableTags: availableTags,
+        errors: errors.array(),
+      });
+    }
+    const { tagId } = matchedData(req); 
+    await db.addTagToRecipe(req.params.recipeId, tagId); 
+    res.redirect(`/recipes/edit/tags/${req.params.recipeId}`); 
   },
 ];
 
@@ -100,6 +131,8 @@ module.exports = {
   editRecipePost,
   editRecipeStepsGet,
   editRecipeStepsPost,
+  editRecipeTagsGet,
+  editRecipeTagsPost, 
   showRecipe,
   deleteRecipe,
 };

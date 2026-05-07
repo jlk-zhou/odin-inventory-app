@@ -21,6 +21,12 @@ const validateRecipeSteps = [
     .withMessage(`Recipe steps ${lengthErr(500)}`),
 ];
 
+const validateRecipeTags = [
+  body("tagId")
+    .notEmpty()
+    .withMessage("Please choose a tag."), 
+]
+
 const validateTag = [
   body("tagName")
     .trim()
@@ -58,6 +64,7 @@ const validateIngredient = [
 module.exports = {
   validateRecipe,
   validateRecipeSteps,
+  validateRecipeTags, 
   validateTag,
   validateIngredient,
 };

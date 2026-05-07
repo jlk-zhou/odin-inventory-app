@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipro</title>
+</head>
+<body>
+  <%- include('../navbar.ejs') %>
+  <h1>Edit Tags for Recipe: <%= recipe.title %></h1>
+  <h2>Add a Tag</h2>
+  <%- include('../errors.ejs') %>
+  <form action="/recipes/edit/tags/<%= recipe.id %>" method="POST">
+    <label for="tag-id">Choose a tag:</label>
+    <select name="tagId" id="tag-id">
+      <option value="">--Please choose a tag--</option>
+      <% availableTags.forEach(tag => { %>
+        <option value="<%= tag.id %>"><%= tag.name %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Add</button>
+  </form>
+  <h2>Current Tags for This Recipe</h2>
+  <ul>
+    <% tags.forEach(tag => { %>
+      <li>
+        <%= tag.name %>
+        X
+      </li>
+    <% }) %>
+  </ul>
+  <ul>
+    <li>
+      <a href="/recipes/edit/<%= recipe.id %>">Back to Edit</a>
+    </li>
+    <li>
+      <a href="/">Back to Home</a>
+    </li>
+  </ul>
+</body>
+</html>

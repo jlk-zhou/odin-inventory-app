@@ -5,6 +5,16 @@ async function createRecipe(title) {
   await pool.query("INSERT INTO recipes (title) VALUES ($1); ", [title]);
 }
 
+async function addTagToRecipe(recipeId, tagId) {
+  await pool.query(
+    `
+    INSERT INTO recipes_tags (recipe_id, tag_id)
+    VALUES (($1), ($2)); 
+    `,
+    [recipeId, tagId],
+  );
+}
+
 // Read queries
 async function getAllRecipes() {
   const { rows } = await pool.query("SELECT * FROM recipes; ");
@@ -16,6 +26,19 @@ async function getRecipe(id) {
     id,
   ]);
   return rows[0];
+}
+
+async function getTagForRecipe(recipeId) {
+  const { rows } = await pool.query(
+    `
+    SELECT tags.id, tags.name
+    FROM tags
+    JOIN recipes_tags ON tags.id = tag_id
+    WHERE recipe_id = ($1); 
+    `,
+    [recipeId],
+  );
+  return rows; 
 }
 
 // Update queries
@@ -40,8 +63,10 @@ async function deleteRecipe(id) {
 
 module.exports = {
   createRecipe,
+  addTagToRecipe,
   getAllRecipes,
   getRecipe,
+  getTagForRecipe, 
   editRecipe,
   editRecipeSteps,
   deleteRecipe,
