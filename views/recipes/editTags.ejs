@@ -25,7 +25,7 @@
     <% tags.forEach(tag => { %>
       <li>
         <%= tag.name %>
-        X
+        <a href="/recipes/edit/tags/delete/<%= recipe.id %>/<%= tag.id %>">X</a> 
       </li>
     <% }) %>
   </ul>

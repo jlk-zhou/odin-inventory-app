@@ -1,27 +1,42 @@
 const { Router } = require("express");
-const recipesRouter = Router(); 
-const recipesController = require("../controllers/recipesController"); 
+const recipesRouter = Router();
+const recipesController = require("../controllers/recipesController");
 
-// Create a recipe 
-recipesRouter.get("/new", recipesController.createRecipeGet); 
-recipesRouter.post("/new", recipesController.createRecipePost); 
+// Create a recipe
+recipesRouter.get("/new", recipesController.createRecipeGet);
+recipesRouter.post("/new", recipesController.createRecipePost);
 
 // Update tags for a recipe
-recipesRouter.get("/edit/tags/:recipeId", recipesController.editRecipeTagsGet); 
-recipesRouter.post("/edit/tags/:recipeId", recipesController.editRecipeTagsPost); 
+recipesRouter.get("/edit/tags/:recipeId", recipesController.editRecipeTagsGet);
+recipesRouter.post(
+  "/edit/tags/:recipeId",
+  recipesController.editRecipeTagsPost,
+);
+
+// Delete a tag for a recipe
+recipesRouter.get(
+  "/edit/tags/delete/:recipeId/:tagId",
+  recipesController.deleteTagFromRecipe,
+);
 
 // Update steps of a recipe
-recipesRouter.get("/edit/steps/:recipeId", recipesController.editRecipeStepsGet); 
-recipesRouter.post("/edit/steps/:recipeId", recipesController.editRecipeStepsPost); 
+recipesRouter.get(
+  "/edit/steps/:recipeId",
+  recipesController.editRecipeStepsGet,
+);
+recipesRouter.post(
+  "/edit/steps/:recipeId",
+  recipesController.editRecipeStepsPost,
+);
 
 // Update title of a recipe
-recipesRouter.get("/edit/:recipeId", recipesController.editRecipeGet); 
-recipesRouter.post("/edit/:recipeId", recipesController.editRecipePost); 
+recipesRouter.get("/edit/:recipeId", recipesController.editRecipeGet);
+recipesRouter.post("/edit/:recipeId", recipesController.editRecipePost);
 
 // Read a recipe's detail
-recipesRouter.get("/:recipeId", recipesController.showRecipe); 
+recipesRouter.get("/:recipeId", recipesController.showRecipe);
 
 // Delete a recipe
-recipesRouter.get("/delete/:recipeId", recipesController.deleteRecipe); 
+recipesRouter.get("/delete/:recipeId", recipesController.deleteRecipe);
 
-module.exports = recipesRouter; 
+module.exports = recipesRouter;

@@ -118,6 +118,12 @@ async function showRecipe(req, res) {
   res.render("recipes/detail", { recipe: recipe, ingredients: ingredients });
 }
 
+// Delete a tag from recipe
+async function deleteTagFromRecipe(req, res) {
+  await db.deleteTagFromRecipe(req.params.recipeId, req.params.tagId); 
+  res.redirect(`/recipes/edit/tags/${req.params.recipeId}`); 
+}
+
 // Delete a recipe
 async function deleteRecipe(req, res) {
   await db.deleteRecipe(req.params.recipeId);
@@ -134,5 +140,6 @@ module.exports = {
   editRecipeTagsGet,
   editRecipeTagsPost, 
   showRecipe,
+  deleteTagFromRecipe, 
   deleteRecipe,
 };
