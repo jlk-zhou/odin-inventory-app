@@ -69,6 +69,8 @@ async function deleteRecipe(id) {
     "DELETE FROM recipes_ingredients WHERE recipe_id = ($1) RETURNING ingredient_id; ",
     [id],
   );
+  const ingredientIds = rows.map(row => row.ingredient_id); 
+  await pool.query("DELETE FROM ingredients WHERE id = ANY($1);", [ingredientIds]); 
   await pool.query("DELETE FROM recipes_tags WHERE recipe_id = ($1);", [id]);
   await pool.query("DELETE FROM recipes WHERE id = ($1);", [id]);
 }
